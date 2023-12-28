@@ -1,0 +1,53 @@
+<div class="relative mt-5 w-[70%] mx-auto">
+  <div>
+    <p class="font-bold text-center text-2xl mb-4 capitalize text-slate-600">
+      Todo App
+    </p>
+    <div>
+      <button
+        [routerLink]="['/create']"
+        class="capitalize text-lg text-white w-full py-2 bg-green-700 rounded-md font-semibold"
+      >
+        Create New Task
+      </button>
+    </div>
+  </div>
+  <div class="bg-slate-200 rounded-md mt-5 p-4">
+    <table>
+      <thead>
+        <tr className=" capitalize">
+          <th>image</th>
+          <th>title</th>
+          <th>content</th>
+          <th>actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of task">
+          <td>
+            <img [src]="getImageUrl(item.image)" class="w-50" alt="" />
+          </td>
+
+          <td>{{ item.title }}</td>
+          <td>{{ item.content }}</td>
+          <td>
+            <div class="flex items-center justify-between px-2">
+              <button
+                class="bg-green-600 py-2 px-4 rounded-md text-white"
+                (click)="deleteTask(item.id)"
+              >
+                Delete
+              </button>
+              <button
+              [routerLink]="['/update', item.id]"
+              class="bg-red-600 py-2 px-4 rounded-md text-white"
+              >
+                Update
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

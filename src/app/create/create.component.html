@@ -1,0 +1,41 @@
+{{ image | json }}
+<div class="flex flex-col items-center justify-center mt-2 gap-2">
+  <h1 class="text-3xl text-green-700 font-bold capitalize">create new task</h1>
+  <form
+    [formGroup]="taskForm"
+    (submit)="create()"
+    class="bg-slate-300 w-[60%] rounded-lg shadow-lg"
+  >
+    <div
+      class="flex flex-col w-full items-center py-4 justify-center gap-4 px-3"
+    >
+      <input
+        formControlName="title"
+        type="text"
+        placeholder="title"
+        class="rounded-md p-2 outline-none w-full"
+      />
+      <textarea
+        formControlName="content"
+        class="p-2 rounded-md outline-none w-full"
+        rows="{4}"
+        cols="{50}"
+        placeholder="Content"
+        name="content"
+      ></textarea>
+      <input
+        (change)="saveImg($event)"
+        type="file"
+        placeholder="image"
+        class="rounded-md p-2 border w-full"
+      />
+      <button
+        [disabled]="taskForm.invalid"
+        type="submit"
+        class="rounded-md py-2 w-full bg-green-700 text-xl font-semibold text-white capitalize"
+      >
+        create
+      </button>
+    </div>
+  </form>
+</div>
