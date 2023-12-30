@@ -1,24 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskModelComponent } from '../task-model/task-model.component';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterModule, RouterOutlet } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SharedService } from '../shared.service';
 import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TaskModelComponent, CommonModule, RouterModule, RouterOutlet],
+  imports: [CommonModule, RouterModule, RouterOutlet],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
   task: any;
-
-  constructor(private _shared: SharedService) {}
+  tasks: any;
+  id: any = this.router.snapshot.params['id'];
+  constructor(private _shared: SharedService, private router: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.getAllTask();
+    console.log('Extracted id:', this.id);
   }
 
   getAllTask() {
@@ -41,15 +43,16 @@ export class HomeComponent implements OnInit {
     return 'https://task.ecmpp.com/storage/' + imageUrl;
   }
 
-  deleteTask(id: any) {
-    // const headers = new HttpHeaders({
-    //   Authorization: 'Bearer ',
-    // });
+  updatedata = new FormGroup({
+    title: new FormControl(''),
+    content: new FormControl(''),
+    id: new FormControl(this.id),
+  });
 
+  deleteTask(id: any) {
     this._shared.deleteTask(id).subscribe({
       next: (res) => {
         console.log(res);
-        //this.ngOnInit();
       },
       error: (err) => {
         console.log(err);

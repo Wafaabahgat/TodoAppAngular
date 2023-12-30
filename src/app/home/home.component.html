@@ -15,7 +15,7 @@
   <div class="bg-slate-200 rounded-md mt-5 p-4">
     <table>
       <thead>
-        <tr className=" capitalize">
+        <tr className="capitalize">
           <th>image</th>
           <th>title</th>
           <th>content</th>
@@ -23,12 +23,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of task">
-          <td>
+        <tr *ngFor="let item of task" class="cursor-pointer">
+          <td [routerLink]="['/showTask', item.id]">
             <img [src]="getImageUrl(item.image)" class="w-50" alt="" />
           </td>
 
-          <td>{{ item.title }}</td>
+          <td [routerLink]="['/showTask', item.id]">{{ item.title }}</td>
           <td>{{ item.content }}</td>
           <td>
             <div class="flex items-center justify-between px-2">
@@ -39,8 +39,8 @@
                 Delete
               </button>
               <button
-              [routerLink]="['/update', item.id]"
-              class="bg-red-600 py-2 px-4 rounded-md text-white"
+                [routerLink]="['/update', item.id]"
+                class="bg-red-600 py-2 px-4 rounded-md text-white"
               >
                 Update
               </button>

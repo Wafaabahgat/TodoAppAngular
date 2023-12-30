@@ -12,9 +12,8 @@ export class SharedService {
 
   private url = 'https://task.ecmpp.com/api/task/';
 
-  getAllTask(username: string): Observable<any> {
-    const params = new HttpParams().set('username', username);
-    return this.http.get(this.url + 'all/bedo - 2003', { params });
+  getAllTask() {
+    return this.http.get(this.url + 'all/bedo - 2003');
   }
 
   createNewTask(task: any) {
@@ -22,10 +21,14 @@ export class SharedService {
   }
 
   updateTask(task: any) {
-    return this.http.post(this.url + 'edit', task);
+    return this.http.post(this.url + `edit`, task);
   }
 
   deleteTask(id) {
     return this.http.delete(this.url + `remove/${id}`);
+  }
+  
+  getTaskById(id: any) {
+    return this.http.get(`${this.url}Show/${id}`);
   }
 }

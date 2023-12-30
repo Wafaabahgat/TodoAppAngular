@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../shared.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
-  FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -22,51 +22,52 @@ import { CommonModule } from '@angular/common';
   styleUrl: './update.component.css',
 })
 export class UpdateComponent implements OnInit {
-  id: any;
+  id: any = this.router.snapshot.params['id'];
   task: any;
-  taskForm: FormGroup;
-
-
+  editTaskForm: FormGroup;
 
   constructor(
     private _shared: SharedService,
-    private act: ActivatedRoute,
-    private fb: FormBuilder
-  ) {
-      this.taskForm = this.fb.group({
-        content: [''],
-        title: [''],
-      });
-    }
+    private router: ActivatedRoute,
 
-  updateTask() {
-    const formData = this.taskForm.value;
-    this._shared
-      .updateTask({
-        id: this.id,
-        content: formData.content,
-        title: formData.title,
-      })
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          alert('Updated Task');
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-  }
+    private route: Router
+  ) {}
+
+  updatedata = new FormGroup({
+    title: new FormControl(''),
+    content: new FormControl(''),
+    id: new FormControl(this.id),
+  });
 
   ngOnInit(): void {
-    const id = +this.act.snapshot.paramMap.get('id');
-    console.log('Extracted id:', id);
-    this._shared.getAllTask('bedo-2003').subscribe((data) => {
-      this.taskForm.patchValue({
-        title: data[0].title,
-        content: data[0].content,
-      });
+    this._shared.getTaskById(this.id).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.updatedata.patchValue({
+          title: res.title,
+          content: res.content,
+          id: res.id,
+        });
+
+        console.log('form values', this.updatedata.value);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+    console.log('Extracted id:', this.id);
+  }
+
+  updateTask() {
+    this._shared.updateTask(this.updatedata.value).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.route.navigate(['/']);
+        alert('Updated Task');
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 }
-

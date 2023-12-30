@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../shared.service';
 import {
+  FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
@@ -9,6 +10,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create',
@@ -39,7 +41,7 @@ export class CreateComponent {
   saveImg(e): void {
     this.image = e.target.files[0];
   }
-  
+
   create() {
     console.log(this.taskForm.value);
     const values = this.taskForm.value;
@@ -52,6 +54,7 @@ export class CreateComponent {
     this._shared.createNewTask(formData).subscribe({
       next: (res) => {
         console.log(res);
+        this.route.navigate(['/']);
       },
       error: (err: HttpErrorResponse) => {
         console.log(err);
@@ -62,5 +65,14 @@ export class CreateComponent {
     });
   }
 
-  constructor(public _shared: SharedService) {}
+  form: any;
+  constructor(
+    public _shared: SharedService,
+    private route: Router
+  ) //private _fb: FormBuilder
+  {
+    // this.form = this._fb.group({
+    // title: this._fb.control('', Validators.required),
+    // });
+  }
 }

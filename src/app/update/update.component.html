@@ -3,8 +3,7 @@
     update task
   </h2>
   <form
-    [formGroup]="taskForm"
-    (ngSubmit)="updateTask()"
+    [formGroup]="updatedata"
     class="bg-slate-300 w-[60%] rounded-lg shadow-lg"
   >
     <div
@@ -30,6 +29,7 @@
         class="rounded-md p-2 border w-full"
       />
       <button
+        (click)="updateTask()"
         type="submit"
         class="rounded-md py-2 w-full bg-green-700 text-xl font-semibold text-white capitalize"
       >
